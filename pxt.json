@@ -2,6 +2,10 @@
     "name": "duck",
     "version": "0.0.0",
     "files": [
+        "tilemap.g.jres",
+        "tilemap.g.ts",
+        "images.g.jres",
+        "images.g.ts",
         "main.ts"
     ],
     "supportedTargets": [
