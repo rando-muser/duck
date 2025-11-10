@@ -79,6 +79,10 @@ f . . . . . f . . . . . . . . f
 f . . . . . f f . . . . . . . f 
 f . . . . . . f f f f f . . . f 
 `;
+            case "image5":
+            case "myImage3":return img`
+. 
+`;
         }
         return null;
     })

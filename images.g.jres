@@ -30,5 +30,13 @@
         "namespace": "myImages.",
         "mimeType": "image/x-mkcd-f4",
         "displayName": "myImage2"
+    },
+    "myImages.image5": {
+        "id": "myImages.image5",
+        "data": "hwQBAAEAAAAAAAAA",
+        "dataEncoding": "base64",
+        "namespace": "myImages.",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "myImage3"
     }
 }
