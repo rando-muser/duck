@@ -12,7 +12,8 @@
         "arcade"
     ],
     "dependencies": {
-        "device": "*"
+        "device": "*",
+        "arcade-timers": "github:microsoft/arcade-timers#v1.1.0"
     },
     "testDependencies": {}
 }

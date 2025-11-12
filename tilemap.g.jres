@@ -25,51 +25,6 @@
         "tilemapTile": true,
         "displayName": "myTile"
     },
-    "myTiles.tile2": {
-        "id": "myTiles.tile2",
-        "data": "hwQQABAAAAAREREREREREWGZmZmZxu4eYRmZmWnp4R6RlpGZaekeHJGZGZmZ5u4ekZmZkZnp7h6RGWkZmcnsHpGZkZmR6e4ckZkWmRnp7h6RmWmRmeHuHpGZmRmZGc4ckZmZmZHp4R6RlpmZmenuHpGRmZmWyewekZmZmZnp7hwREREREREREQ==",
-        "dataEncoding": "base64",
-        "namespace": "myTiles.",
-        "mimeType": "image/x-mkcd-f4",
-        "tilemapTile": true,
-        "displayName": "myTile0"
-    },
-    "myTiles.tile4": {
-        "id": "myTiles.tile4",
-        "data": "hwQQABAAAAAREREREREREeHO7s7u7O4c4R7u7u7s7h7h4e7s7h7OHsHu7uzu4c4eYZmWmRmZmRmRZpmZkZmZGZGZmRmZGWkZkZmZkZmRmRmRmRmZGZmZGZGZkZZhmZkZkRmZGZaZmRmRkZmRmZmZGZFpmZmZmRYZYZaZmZmZmRkREREREREREQ==",
-        "dataEncoding": "base64",
-        "namespace": "myTiles.",
-        "mimeType": "image/x-mkcd-f4",
-        "tilemapTile": true,
-        "displayName": "myTile2"
-    },
-    "myTiles.tile5": {
-        "id": "myTiles.tile5",
-        "data": "hwQQABAAAAAREREREREREWGWmZmZmZkZkWmZmZmZFhmRkZmRmZmZGZEZmRmWmZkZkZmRlmGZmRmRmRmZGZmZGZGZmZGZkZkZkZmZGZkZaRmRZpmZkZmZGWGZlpkZmZkZwe7u7O7hzh7h4e7s7h7OHuEe7u7u7O4e4c7uzu7s7hwREREREREREQ==",
-        "dataEncoding": "base64",
-        "namespace": "myTiles.",
-        "mimeType": "image/x-mkcd-f4",
-        "tilemapTile": true,
-        "displayName": "myTile3"
-    },
-    "myTiles.tile6": {
-        "id": "myTiles.tile6",
-        "data": "hwQQABAAAAAREREREREREeHs7s7u7u4c4R7uzu7u4R7h7sHu7uweHsHuHu7u7O4ekZmZkZnp7h6RGWkZmenuHJGZkZmRyewekZkWmRnp7h6RmWmRmeHuHpGZmRmZGe4ekZmZmZHpwRyRlpmZmenuHpGRmZmW6e4ckZmZmZnJ7B4REREREREREQ==",
-        "dataEncoding": "base64",
-        "namespace": "myTiles.",
-        "mimeType": "image/x-mkcd-f4",
-        "tilemapTile": true,
-        "displayName": "myTile4"
-    },
-    "myTiles.tile7": {
-        "id": "myTiles.tile7",
-        "data": "hwQQABAAAAAREREREREREZGZmZmZyewekZGZmZbp7hyRlpmZmenuHpGZmZmR6cEckZmZGZkZ7h6RmWmRmeHuHpGZFpkZ6e4ekZmRmZHJ7B6RGWkZmenuHJGZmZGZ6e4ewe4e7u7s7h7h7sHu7uweHuEe7s7u7uEe4ezuzu7u7hwREREREREREQ==",
-        "dataEncoding": "base64",
-        "namespace": "myTiles.",
-        "mimeType": "image/x-mkcd-f4",
-        "tilemapTile": true,
-        "displayName": "myTile5"
-    },
     "myTiles.tile8": {
         "id": "myTiles.tile8",
         "data": "hwQQABAAAAARERERERERERERERERERERFRERERERERERERERERESERERERERERERERERFBERERERERERERERERERERERERERETEREREREREREREREREREREREREREZERERERERERERERERERERERERERERERERERERERERcREaEREREREREREQ==",
@@ -97,9 +52,18 @@
         "tilemapTile": true,
         "displayName": "myTile8"
     },
+    "myTiles.tile11": {
+        "id": "myTiles.tile11",
+        "data": "hwQQABAAAADd3d3d3d3d3R0RERERERHRHdERERERHdEdER0RERHS0R0R0RERERHRHRERHREREdEd0RHRERER0R0RHREdERHRHTHREdEREdEdEREdER0R0R0REdER0ZHRHRERER0RHdEdERERERER0R0dERERERHRHRERERcREdHd3d3d3d3d3Q==",
+        "dataEncoding": "base64",
+        "namespace": "myTiles.",
+        "mimeType": "image/x-mkcd-f4",
+        "tilemapTile": true,
+        "displayName": "myTile9"
+    },
     "level1": {
         "id": "level1",
-        "data": "MTAwYTAwMDgwMDA3MDcwNzA3MDcwNzA3MDcwNzA3MDcwMzAxMDEwMTAxMDEwMTA0MDcwNzAzMDEwMTAxMDEwMTAxMDQwNzA3MDMwMTAxMDEwMTAxMDEwNDA3MDcwMzAxMDEwMTAxMDEwMTA0MDcwNzAzMDEwMTAxMDEwMTAxMDQwNzA3MDUwMjAyMDIwMjAyMDIwNjA3MDcwODA3MDcwNzA3MDcwNzA5MDcwMDAwMDAwMDAwMjAwMDAwMDAwMjIwMDAwMDAwMDIyMDAwMDAwMDAyMjAwMDAwMDAwMjIwMDAwMDAwMDIyMDIyMjIyMjAyMDAwMDAwMDAwMA==",
+        "data": "MTAwYTAwMDgwMDAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwNTA1MDUwNTA1MDUwNTA1MDIwMjA1MDEwMTAxMDEwMTAxMDUwMjAyMDUwMTAxMDEwMTAxMDEwNTAyMDIwNTAxMDEwMTAxMDEwMTA1MDIwMjA1MDEwMTAxMDEwMTAxMDUwMjAyMDUwNTA1MDUwNTA1MDUwNTAyMDIwMzAyMDIwMjAyMDIwMjA0MDIwMDAwMDAwMDAwMjAyMjIyMjIwMjIwMDAwMDAwMDIyMDAwMDAwMDAyMjAwMDAwMDAwMjIwMDAwMDAwMDIyMDIyMjIyMjAyMDAwMDAwMDAwMA==",
         "dataEncoding": "base64",
         "namespace": "myTiles.",
         "mimeType": "application/mkcd-tilemap",
@@ -107,14 +71,11 @@
         "tileset": [
             "myTiles.transparency16",
             "myTiles.tile1",
-            "myTiles.tile2",
-            "myTiles.tile4",
-            "myTiles.tile5",
-            "myTiles.tile6",
-            "myTiles.tile7",
             "myTiles.tile8",
             "myTiles.tile9",
-            "myTiles.tile10"
+            "myTiles.tile10",
+            "myTiles.tile3",
+            "myTiles.tile11"
         ]
     }
 }

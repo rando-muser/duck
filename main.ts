@@ -2,11 +2,14 @@ scene.setTileMapLevel(assets.tilemap`level`);
 let duckImage = assets.image`myImage`;
 let blank = assets.image`myImage3`
 let waterTile = assets.tile`myTile`
+let glassWaterTile = assets.tile`myTile1`
+let glassTile = assets.tile`myTile9`
 let backgroundTile = assets.tile`myTile6`
+
 let duck = sprites.create(duckImage, SpriteKind.Food);
 
-// bottom, left right, bottom-left, bottom-right glass tiles
-let glassSprites = [assets.tile`myTile0`, assets.tile`myTile2`, assets.tile`myTile3`, assets.tile`myTile4`, assets.tile`myTile5`];
+const drainSpeed = 300;
+
 // Advance amount of cracking from least to most
 let brokenGlassSprites = [assets.image`myImage0`, assets.image`myImage1`, assets.image`myImage2`];
 
@@ -16,9 +19,8 @@ crackingSprites[0].destroy();
 crackingSprites.pop();
 
 //initial conditions
-duck.vx = 50
-duck.ay = 10
-duck.vy = 40
+duck.vx = Math.randomRange(-50, 50)
+duck.vy = Math.randomRange(-50, 50)
 duck.setBounceOnWall(true)
 
 //Function to crack glass when a duck hits it
@@ -41,7 +43,9 @@ scene.onHitWall(SpriteKind.Food, function (sprite: Sprite, location: tiles.Locat
                 tiles.setTileAt(location, assets.tile`myTile`);
                 tiles.setWallAt(location, false);
                 //And make the water drain
-                waterLevel(location.y);
+                timer.background(function() {
+                    waterLevel(location.row);
+                })
             }
             tempBoolean = true;
         }
@@ -55,11 +59,14 @@ scene.onHitWall(SpriteKind.Food, function (sprite: Sprite, location: tiles.Locat
 
 //Function to recalculate water level when a duck breaks glass
 function waterLevel(level: number) {
-    //Then drain water animation
-    let tempArray = tiles.getTilesByType(waterTile);
-    for (let i = 0; i < tempArray.length; i++) {
-        if (tempArray[i].y <= level) {
-            tiles.setTileAt(tempArray[i], backgroundTile)
+    for (let j = 0; j <= level; j++) {
+        for (let i = 0; i < 10; i++) {
+            if (tiles.getTileAt(i, j) == waterTile) {
+                tiles.setTileAt(tiles.getTileLocation(i, j), backgroundTile);
+            } else if (tiles.getTileAt(i, j) == glassWaterTile) {
+                tiles.setTileAt(tiles.getTileLocation(i, j), glassTile)
+            }
         }
+        pause(drainSpeed)
     }
 }

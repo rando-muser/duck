@@ -1,12 +1,4 @@
 {
-    "myImages.image1": {
-        "id": "myImages.image1",
-        "data": "hwQQABAAAAAAAABARQUAAAAAAEBVVQUAAAAAUFVVVQAAAABQRFRVBQAAAFBURFVVAAAAUFRFVFUAAABQVFVUVQAAAFBUVUVVAFUFUFRVVVVQVVVQVVVFVVVVVVVVVVVVVfFVVVRVVFVVVVVVRURVVVBVRFBVVVUFAEVEUFVVVQAAQEQAVVUFAA==",
-        "dataEncoding": "base64",
-        "namespace": "myImages.",
-        "mimeType": "image/x-mkcd-f4",
-        "displayName": "myImage"
-    },
     "myImages.image5": {
         "id": "myImages.image5",
         "data": "hwQBAAEAAAAAAAAA",
@@ -38,5 +30,13 @@
         "namespace": "myImages.",
         "mimeType": "image/x-mkcd-f4",
         "displayName": "myImage2"
+    },
+    "myImages.image1": {
+        "id": "myImages.image1",
+        "data": "hwQMAAwAAAAAAABUAAAAAAAAAFVVAAAAAAAAVVUFAAAAAABEVFUAAAAAAFRFVQAAAAAAVFVUAABQVQVUVUUAAFVVVVRVVQAAVfxVRVVVAABVVVVVVFUAAFBEBFVVBQAAAEAEUFUAAAA=",
+        "dataEncoding": "base64",
+        "namespace": "myImages.",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "myImage"
     }
 }
