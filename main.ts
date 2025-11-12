@@ -7,6 +7,7 @@ let glassTile = assets.tile`myTile9`
 let backgroundTile = assets.tile`myTile6`
 
 let duck = sprites.create(duckImage, SpriteKind.Food);
+let waterLevel = 0;
 
 const drainSpeed = 300;
 
@@ -40,17 +41,16 @@ scene.onHitWall(SpriteKind.Food, function (sprite: Sprite, location: tiles.Locat
                 crackingSprites[i].setImage(blank);
                 crackingSprites[i].destroy();
                 crackingSprites.removeAt(i);
-                tiles.setTileAt(location, assets.tile`myTile`);
-                tiles.setWallAt(location, false);
+                tiles.setTileAt(location, backgroundTile);
                 //And make the water drain
                 timer.background(function() {
-                    waterLevel(location.row);
+                    drainWaterLevel(location.row);
                 })
             }
             tempBoolean = true;
         }
     } 
-    if (tempBoolean == false) {
+    if (tempBoolean == false && (tiles.tileAtLocationEquals(location, glassWaterTile) || tiles.tileAtLocationEquals(location, glassTile))) {
         //If no crack exists, make a new one
         crackingSprites.push(sprites.create(brokenGlassSprites[0], SpriteKind.Enemy))
         tiles.placeOnTile(crackingSprites[crackingSprites.length - 1], location);
@@ -58,8 +58,8 @@ scene.onHitWall(SpriteKind.Food, function (sprite: Sprite, location: tiles.Locat
 })
 
 //Function to recalculate water level when a duck breaks glass
-function waterLevel(level: number) {
-    for (let j = 0; j <= level; j++) {
+function drainWaterLevel(level: number) {
+    for (let j = waterLevel; j <= level; j++) {
         for (let i = 0; i < 10; i++) {
             if (tiles.getTileAt(i, j) == waterTile) {
                 tiles.setTileAt(tiles.getTileLocation(i, j), backgroundTile);
