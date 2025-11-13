@@ -175,17 +175,29 @@ namespace myTiles {
 
     helpers._registerFactory("tilemap", function(name: string) {
         switch(helpers.stringTrim(name)) {
+            case "level0":
+            case "level2":return tiles.createTilemap(hex`0100010000`, img`
+. 
+`, [myTiles.transparency16], TileScale.Sixteen);
             case "level":
-            case "level1":return tiles.createTilemap(hex`0a0008000202020202020202020202050505050505050502020501010101010105020205010101010101050202050101010101010502020501010101010105020205050505050505050202030202020202020402`, img`
+            case "level1":return tiles.createTilemap(hex`0a00100002020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202050101010101010502020501010101010105020205010101010101050202050101010101010502020501010101010105020205050505050505050202030202020202020402`, img`
 . . . . . . . . . . 
-. 2 2 2 2 2 2 2 2 . 
+. . . . . . . . . . 
+. . . . . . . . . . 
+. . . . . . . . . . 
+. . . . . . . . . . 
+. . . . . . . . . . 
+. . . . . . . . . . 
+. . . . . . . . . . 
+. . . . . . . . . . 
+. 2 . . . . . . 2 . 
 . 2 . . . . . . 2 . 
 . 2 . . . . . . 2 . 
 . 2 . . . . . . 2 . 
 . 2 . . . . . . 2 . 
 . 2 2 2 2 2 2 2 2 . 
 . . . . . . . . . . 
-`, [myTiles.transparency16,myTiles.tile1,myTiles.tile8,myTiles.tile9,myTiles.tile10,myTiles.tile3,myTiles.tile11], TileScale.Sixteen);
+`, [myTiles.transparency16,myTiles.tile1,myTiles.tile8,myTiles.tile9,myTiles.tile10,myTiles.tile3], TileScale.Sixteen);
         }
         return null;
     })
