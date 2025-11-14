@@ -15,6 +15,7 @@ pauseUntil(() => controller.anyButton.isPressed())
 //LEVEL START
 scene.setTileMapLevel(assets.tilemap`level`);
 let duck = sprites.create(duckImage, SpriteKind.Food);
+sprites.setDataNumber(duck, "index", 0)
 // set sprite data here
 let inWater = true;
 
@@ -89,6 +90,15 @@ scene.onOverlapTile(SpriteKind.Food, waterTile, function (sprite: Sprite, locati
     }
 })
 
+browserEvents.MouseLeft.onEvent(browserEvents.MouseButtonEvent.Pressed, function (x: number, y: number) {
+    //If left click close to duck, activate power
+    if (Math.abs(duck.x - x) < 16 && Math.abs((duck.y - rowsAbove*16) - y) < 16) {
+        duckPower(sprites.readDataNumber(duck, "index"))
+    }
+})
+
+/* FUNCTIONS */
+
 //Function to recalculate water level when a duck breaks glass
 //NOTE: Make sure to put a call to this inside of a timer.background loop, or else the entire game will pause until this finishes!!
 function drainWaterLevel(level: number) {
@@ -126,3 +136,41 @@ function gameOver(ending: number) {
         game.gameOver(false)
     }
 }
+
+//For activating a duck's power
+function duckPower(index: number) {
+    if (index == 0) {
+        if (crackingSprites.length > 0) {
+            //Find closest sprite
+            let tempNumber = closestSprite(duck, crackingSprites);
+            let tempNumber2 = brokenGlassSprites.indexOf(crackingSprites[tempNumber].image)
+            if (tempNumber2 > 0) {
+                crackingSprites[tempNumber].setImage(brokenGlassSprites[tempNumber2 - 1])
+            }
+            else {
+                crackingSprites[tempNumber].destroy()
+                crackingSprites.removeAt(tempNumber)
+            }
+        }
+    }
+}
+
+function closestSprite(sprite: Sprite, list: Sprite[]) {
+    let tempNumber = 0;
+        for (let i = 1; i < list.length; i++) {
+            if (spriteutils.distanceBetween(sprite, list[i]) < spriteutils.distanceBetween(sprite, list[tempNumber])) {
+                tempNumber = i;
+            }
+        }
+    return (tempNumber);
+}
+
+function spin(sprite: Sprite, speed: Number, time: Number) {
+    if (time == -1) {
+        
+    }
+}
+
+game.onUpdate(function () {
+    duck.say(Math.round(browserEvents.mouseX()) + ", " + Math.round(browserEvents.mouseY()))
+})
