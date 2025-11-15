@@ -12,10 +12,31 @@ let blankTilemap = assets.tilemap`level0`
 
 ////TITLE SCREEN
 scene.setBackgroundImage(backgroundImage);
-
+let textSprite = textsprite.create("ROBBED", 0, 15)
+let textSprite2 = textsprite.create("OF SLEEP", 0, 15)
+let textSprite3 = textsprite.create("Click around!", 0, 1)
+textSprite.setMaxFontHeight(12)
+textSprite.setPosition(40, 30)
+textSprite2.setPosition(40, 45)
+textSprite3.setPosition(80, 113)
+textSprite.setOutline(2, 1)
+textSprite2.setOutline(1, 1)
+textSprite3.setOutline(1, 15)
+textSprite3.z = 2
+animation.runMovementAnimation(textSprite, animation.animationPresets(animation.bobbing), 2000, true)
+animation.runMovementAnimation(textSprite2, animation.animationPresets(animation.bobbing), 2001, true)
 let ramune = sprites.create(ramuneImages[0], SpriteKind.Player)
 ramune.setPosition(114, 70)
-pauseUntil(() => controller.anyButton.isPressed())
+pauseUntil(() => browserEvents.MouseAny.isPressed())
+animation.stopAnimation(animation.AnimationTypes.All, textSprite)
+animation.stopAnimation(animation.AnimationTypes.All, textSprite2)
+for (let i = 0; i < 100; i++) {
+    textSprite.y--
+    textSprite2.y--
+    pause(10)
+}
+sprites.destroy(textSprite)
+sprites.destroy(textSprite2)
 pause(500)
 ramune.setImage(ramuneImages[1]);
 pause(1000)
@@ -52,11 +73,13 @@ duck.setBounceOnWall(true);
 let waterLevel = rowsAbove
 ramune.setFlag(SpriteFlag.GhostThroughWalls, true)
 ramune.z = -2
-for (let i = 0; i < rowsAbove * 16; i++) {
-    scene.centerCameraAt(80, 60 + i)
+for (let i = 1; i < rowsAbove * 16; i++) {
     ramune.y++
+    textSprite3.y++
+    scene.centerCameraAt(80, 60 + i)
     pause(10)
 }
+textSprite3.setText("Try clicking a duck!")
 
 scene.onHitWall(SpriteKind.Food, function (sprite: Sprite, location: tiles.Location) {
     damage(location)
@@ -67,6 +90,7 @@ scene.onOverlapTile(SpriteKind.Food, backgroundTile, function (sprite: Sprite, l
     if (inWater) {
         inWater = false;
         sprite.ay = gravity;
+        sprite.vy += 15
     }
 })
 //Matching function to change from air physics to water physics
@@ -74,6 +98,7 @@ scene.onOverlapTile(SpriteKind.Food, waterTile, function (sprite: Sprite, locati
     if (inWater == false) {
         inWater = true;
         sprite.ay = buoyancy;
+        sprite.vy -= 15
     }
 })
 
@@ -135,13 +160,17 @@ function duckPower(index: number) {
         if (crackingSprites.length > 0) {
             //Find closest sprite
             let tempNumber = closestSprite(duck, crackingSprites);
-            let tempNumber2 = brokenGlassSprites.indexOf(crackingSprites[tempNumber].image)
-            if (tempNumber2 > 0) {
-                crackingSprites[tempNumber].setImage(brokenGlassSprites[tempNumber2 - 1])
-            }
-            else {
-                crackingSprites[tempNumber].destroy()
-                crackingSprites.removeAt(tempNumber)
+            if (spriteutils.distanceBetween(duck, crackingSprites[tempNumber]) < 16 * 3) {
+                let tempNumber2 = brokenGlassSprites.indexOf(crackingSprites[tempNumber].image)
+                if (tempNumber2 > 0) {
+                    crackingSprites[tempNumber].setImage(brokenGlassSprites[tempNumber2 - 1])
+                }
+                else {
+                    crackingSprites[tempNumber].destroy()
+                    crackingSprites.removeAt(tempNumber)
+                }
+                duck.startEffect(effects.hearts, 250)
+                music.play(music.melodyPlayable(music.magicWand), music.PlaybackMode.UntilDone)
             }
         }
     }

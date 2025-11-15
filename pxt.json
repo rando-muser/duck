@@ -16,7 +16,8 @@
         "arcade-timers": "github:microsoft/arcade-timers#v1.1.0",
         "arcade-sprite-data": "github:microsoft/arcade-sprite-data#v0.2.1",
         "browser-events-copy": "github:rando-muser/browser-events-copy#master",
-        "arcade-sprite-util": "github:jwunderl/arcade-sprite-util#v0.4.1"
+        "arcade-sprite-util": "github:jwunderl/arcade-sprite-util#v0.4.1",
+        "arcade-text": "github:microsoft/arcade-text#v1.3.0"
     },
     "testDependencies": {}
 }
