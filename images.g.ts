@@ -741,6 +741,36 @@ cccbbbbbbbbcbcbbcbbbbbbcbcbbcbbbbbbbbbbbbbbbbbbbcccccccbbbbbbbbbbbbbbbbbcccccbbb
 cbcbbbcccbcbbbcbbbcbbcccbbcbbbcbbbcbbccbbbcbbbcbbccccccbbbcbbbcbbbcbcbcbbcccccbbbb11111b1b11111b1111111bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbc2a222a22222222a222a2aa22
 cbbcbbbbbbbbbbbbcbcbbbcbbbbbbbbbbbbbbbbbbbbbcbccbccccccbbbbbbbbbbbbbbbbbbbccccbbbbbbb11111b1b1b1b1b1111bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb2a2222a22222a22222aaa
 `;
+            case "image12":
+            case "myImage10":return img`
+. . . . . . . 9 9 6 . . 
+. . . . . . 6 9 9 6 9 . 
+. . . . . . 6 6 c 6 8 . 
+. . . . . . 9 6 f 6 8 8 
+. . . . . . 9 6 6 6 8 8 
+. . . . . . . 6 6 9 . . 
+8 9 6 8 8 8 8 8 6 6 6 . 
+6 6 6 8 6 6 6 9 8 6 6 9 
+. 9 9 8 9 9 6 6 6 8 6 9 
+. 9 9 6 8 9 6 9 6 6 6 6 
+. . 6 6 6 8 6 6 6 9 9 . 
+. . . 6 9 6 8 6 6 9 . . 
+`;
+            case "image13":
+            case "myImage11":return img`
+. . . . . . . 2 2 2 . . 
+. . . . . . 3 3 2 2 2 . 
+. . . . . . 3 3 c 2 a . 
+. . . . . . 3 3 f 3 a a 
+. . . . . . 2 3 3 3 a a 
+. . . . . . . 2 3 3 . . 
+a 2 2 a a a a a 3 3 2 . 
+3 3 3 a 3 3 2 2 a 3 3 2 
+. 3 3 a 3 2 3 2 2 a 3 2 
+. 3 3 2 a 3 3 2 2 2 3 2 
+. . 2 3 3 a 2 2 2 3 2 . 
+. . . 3 3 3 a 2 3 3 . . 
+`;
         }
         return null;
     })

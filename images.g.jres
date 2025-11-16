@@ -86,5 +86,21 @@
         "namespace": "myImages.",
         "mimeType": "image/x-mkcd-f4",
         "displayName": "myImage9"
+    },
+    "myImages.image12": {
+        "id": "myImages.image12",
+        "data": "hwQMAAwAAAAAAABoAAAAAAAAAGmZAAAAAAAAZpkGAAAAAACIaGYAAAAAAGiJlgAAAAAAaJloAABglgloZoYAAJlmZpiWZgAAmfxmhmZmAABmZpZmaJkAAJCICGZmCQAAAIAIkGkAAAA=",
+        "dataEncoding": "base64",
+        "namespace": "myImages.",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "myImage10"
+    },
+    "myImages.image13": {
+        "id": "myImages.image13",
+        "data": "hwQMAAwAAAAAAAA6AAAAAAAAADIzAAAAAAAAMjMCAAAAAACqKjMAAAAAADqjMwAAAAAAOjI6AAAwMwIqM6IAADIzIyoiIgAAIvwzoyIyAAAiMjMzKjMAACCqCjIzAgAAAKAKICIAAAA=",
+        "dataEncoding": "base64",
+        "namespace": "myImages.",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "myImage11"
     }
 }

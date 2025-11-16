@@ -1,5 +1,5 @@
 // I can't figure out how to rename the actual image files so I'm using variables 0_0
-let duckImages = [assets.image`myImage`]
+let duckImages = [assets.image`myImage`, assets.image`myImage10`, assets.image`myImage11`]
 let blank = assets.image`myImage3`
 let waterTile = assets.tile`myTile`
 let glassWaterTile = assets.tile`myTile1`
@@ -12,12 +12,13 @@ let blankTilemap = assets.tilemap`level0`
 
 function makeDuck() {
     let tempNumber = duckSprites.length
-    duckSprites.push(sprites.create(duckImages[Math.randomRange(0, duckImages.length - 1)], SpriteKind.Food))
+    let tempNumber2 = Math.randomRange(0, 2)
+    duckSprites.push(sprites.create(duckImages[tempNumber2], SpriteKind.Food))
     duckSprites[tempNumber].setPosition(80, 0 + rowsAbove * 16)
     duckSprites[tempNumber].ay = 30;
     duckSprites[tempNumber].vx = Math.randomRange(-50, 50)
     duckSprites[tempNumber].setBounceOnWall(true)
-    sprites.setDataNumber(duckSprites[tempNumber], "index", 0)
+    sprites.setDataNumber(duckSprites[tempNumber], "index", tempNumber2)
 }
 
 //TITLE SCREEN
@@ -88,6 +89,7 @@ for (let i = 1; i < rowsAbove * 16; i++) {
     pause(10)
 }
 textSprite3.setText("Try clicking a duck!")
+textSprite3.x = 80
 
 scene.onHitWall(SpriteKind.Food, function (sprite: Sprite, location: tiles.Location) {
     damage(location)
@@ -99,6 +101,9 @@ scene.onOverlapTile(SpriteKind.Food, backgroundTile, function (sprite: Sprite, l
         inWater = false;
         sprite.ay = gravity;
         sprite.vy += 15
+        if (sprite.vy < -100) {
+            sprite.vy = -100
+        }
     }
 })
 //Matching function to change from air physics to water physics
@@ -107,6 +112,9 @@ scene.onOverlapTile(SpriteKind.Food, waterTile, function (sprite: Sprite, locati
         inWater = true;
         sprite.ay = buoyancy;
         sprite.vy -= 15
+        if (sprite.vy > 100) {
+            sprite.vy = 100
+        }
     }
 })
 
@@ -166,8 +174,15 @@ function gameOver(ending: number) {
         scene.cameraShake(3, 200)
         scene.setBackgroundImage(backgroundImageEnd)
         ramune.setImage(ramuneImages[3])
-        pause(1000)
-        game.gameOver(false)
+        pause(2500)
+        if (Math.round(game.runtime() / 100) / 100 < 60) {
+            game.setGameOverMessage(false, "Slept for " + Math.round(game.runtime() / 100) / 100 + " minutes!")
+            game.gameOver(false)
+        }
+        else {
+            game.setGameOverMessage(true, "Slept for " + Math.round(game.runtime() / 100) / 100 / 60 + " hours!")
+            game.gameOver(true)
+        }
     }
 }
 
@@ -191,17 +206,67 @@ function duckPower(index: number, sprite: Sprite) {
             }
         }
     } else if (index == 1) {
-        while (false) {
+        let tempBoolean = true;
+        for (let i = 0; i < 100; i++) {
             let tempNumber = Math.randomRange(1, 8);
             let tempNumber2 = rowsAbove + Math.randomRange(1, 6)
+            if (tiles.tileAtLocationEquals(tiles.getTileLocation(tempNumber, tempNumber2), backgroundTile)) {
+                tiles.setWallAt(tiles.getTileLocation(tempNumber, tempNumber2), true)
+                tiles.setTileAt(tiles.getTileLocation(tempNumber, tempNumber2), glassTile)
+                tempBoolean = false;
+            } else if (tiles.tileAtLocationEquals(tiles.getTileLocation(tempNumber, tempNumber2), waterTile)) {
+                tiles.setTileAt(tiles.getTileLocation(tempNumber, tempNumber2), glassWaterTile)
+                tempBoolean = false;
+                tiles.setWallAt(tiles.getTileLocation(tempNumber, tempNumber2), true)
+            }
+            if (tempBoolean == false) {
+                break;
+            }
         }
+        sprite.startEffect(effects.hearts, 250)
+        music.play(music.melodyPlayable(music.magicWand), music.PlaybackMode.UntilDone)
     } else if (index == 2) {
-
-    } else if (index == 3) {
-
-    } else if (index == 4) {
-
-    }
+            let i = waterLevel;
+            //positions of the two glass blocks
+            let tempNumber = -1
+            let tempNumber2 = -1
+            //loop through each column of the row
+            for (let j = 0; j < 10; j++) {
+                if (tiles.tileAtLocationEquals(tiles.getTileLocation(j, i), glassTile)) {
+                    if (tempNumber == -1) {
+                        tempNumber = j;
+                    }
+                    else if (tempNumber2 == -1) {
+                        tempNumber2 = j;
+                        break;
+                        //Found!
+                    }
+                }
+            }
+            if (tempNumber == -1) {
+                tiles.setTileAt(tiles.getTileLocation(1, i), glassTile)
+                tiles.setWallAt(tiles.getTileLocation(1, i), true)
+                tempNumber = 1;
+            }
+            if (tempNumber2 == -1) {
+                tiles.setTileAt(tiles.getTileLocation(8, i), glassTile)
+                tiles.setWallAt(tiles.getTileLocation(8, i), true)
+                tempNumber2 = 8;
+            }
+            if (true) {
+                for (let k = tempNumber; k <= tempNumber2; k++) {
+                    if (tiles.getTileAt(k, i) == backgroundTile) {
+                        tiles.setTileAt(tiles.getTileLocation(k, i), waterTile);
+                    } else if (tiles.getTileAt(k, i) == glassTile) {
+                        tiles.setTileAt(tiles.getTileLocation(k, i), glassWaterTile)
+                    }
+                }
+                waterLevel = i - 1;
+                sprite.startEffect(effects.hearts, 250)
+                music.play(music.melodyPlayable(music.magicWand), music.PlaybackMode.UntilDone)
+                //Found!
+            }
+    } 
     if (Math.percentChance(15)) {
         makeDuck()
     }
@@ -257,5 +322,5 @@ function damage(location: tiles.Location) {
 }
 
 game.onUpdate(function () {
-    //placeholder
+    
 })
