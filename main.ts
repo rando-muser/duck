@@ -1,5 +1,5 @@
 // I can't figure out how to rename the actual image files so I'm using variables 0_0
-let duckImage = assets.image`myImage`;
+let duckImages = [assets.image`myImage`]
 let blank = assets.image`myImage3`
 let waterTile = assets.tile`myTile`
 let glassWaterTile = assets.tile`myTile1`
@@ -10,7 +10,17 @@ let backgroundImageEnd = assets.image`myImage9`
 let ramuneImages = [assets.image`myImage5`, assets.image`myImage6`, assets.image`myImage7`, assets.image`myImage8`]
 let blankTilemap = assets.tilemap`level0`
 
-////TITLE SCREEN
+function makeDuck() {
+    let tempNumber = duckSprites.length
+    duckSprites.push(sprites.create(duckImages[Math.randomRange(0, duckImages.length - 1)], SpriteKind.Food))
+    duckSprites[tempNumber].setPosition(80, 0 + rowsAbove * 16)
+    duckSprites[tempNumber].ay = 30;
+    duckSprites[tempNumber].vx = Math.randomRange(-50, 50)
+    duckSprites[tempNumber].setBounceOnWall(true)
+    sprites.setDataNumber(duckSprites[tempNumber], "index", 0)
+}
+
+//TITLE SCREEN
 scene.setBackgroundImage(backgroundImage);
 let textSprite = textsprite.create("ROBBED", 0, 15)
 let textSprite2 = textsprite.create("OF SLEEP", 0, 15)
@@ -45,8 +55,6 @@ pause(1000)
 
 //LEVEL START
 scene.setTileMapLevel(assets.tilemap`level`);
-let duck = sprites.create(duckImage, SpriteKind.Food);
-sprites.setDataNumber(duck, "index", 0)
 // set sprite data here
 let inWater = true;
 
@@ -64,12 +72,12 @@ let crackingSprites = [sprites.create(brokenGlassSprites[0], SpriteKind.Enemy)];
 crackingSprites[0].destroy();
 crackingSprites.pop();
 
+let duckSprites = [sprites.create(duckImages[0], SpriteKind.Food)]
+duckSprites[0].destroy();
+duckSprites.pop();
+
 //initial conditions
-duck.setPosition(80, 60 + rowsAbove*16)
-duck.vx = Math.randomRange(-50, 50);
-duck.vy = Math.randomRange(-50, 50);
-duck.ay = buoyancy;
-duck.setBounceOnWall(true);
+makeDuck()
 let waterLevel = rowsAbove
 ramune.setFlag(SpriteFlag.GhostThroughWalls, true)
 ramune.z = -2
@@ -104,8 +112,17 @@ scene.onOverlapTile(SpriteKind.Food, waterTile, function (sprite: Sprite, locati
 
 browserEvents.MouseLeft.onEvent(browserEvents.MouseButtonEvent.Pressed, function (x: number, y: number) {
     //If left click close to duck, activate power
-    if (Math.abs(duck.x - x) < 16 && Math.abs((duck.y - rowsAbove*16) - y) < 16) {
-        duckPower(sprites.readDataNumber(duck, "index"))
+    let tempBoolean = false;
+    let tempNumber = 0;
+    for (let i = 0; i < duckSprites.length; i++) {
+        if (Math.abs(duckSprites[i].x - x) < 16 && Math.abs((duckSprites[i].y - rowsAbove * 16) - y) < 16) {
+            tempBoolean = true;
+            tempNumber = i;
+            break;
+        }
+    }
+    if (tempBoolean) {
+        duckPower(sprites.readDataNumber(duckSprites[tempNumber], "index"), duckSprites[tempNumber])
     } else if (tiles.getTileAt(Math.floor(x / 16), Math.floor((y + rowsAbove*16) / 16)) == glassWaterTile) {
         damage(tiles.getTileLocation(Math.floor(x / 16), Math.floor((y + rowsAbove*16) / 16)))
     }
@@ -155,12 +172,12 @@ function gameOver(ending: number) {
 }
 
 //For activating a duck's power
-function duckPower(index: number) {
+function duckPower(index: number, sprite: Sprite) {
     if (index == 0) {
         if (crackingSprites.length > 0) {
             //Find closest sprite
-            let tempNumber = closestSprite(duck, crackingSprites);
-            if (spriteutils.distanceBetween(duck, crackingSprites[tempNumber]) < 16 * 3) {
+            let tempNumber = closestSprite(sprite, crackingSprites);
+            if (spriteutils.distanceBetween(sprite, crackingSprites[tempNumber]) < 16 * 3) {
                 let tempNumber2 = brokenGlassSprites.indexOf(crackingSprites[tempNumber].image)
                 if (tempNumber2 > 0) {
                     crackingSprites[tempNumber].setImage(brokenGlassSprites[tempNumber2 - 1])
@@ -169,10 +186,24 @@ function duckPower(index: number) {
                     crackingSprites[tempNumber].destroy()
                     crackingSprites.removeAt(tempNumber)
                 }
-                duck.startEffect(effects.hearts, 250)
+                sprite.startEffect(effects.hearts, 250)
                 music.play(music.melodyPlayable(music.magicWand), music.PlaybackMode.UntilDone)
             }
         }
+    } else if (index == 1) {
+        while (false) {
+            let tempNumber = Math.randomRange(1, 8);
+            let tempNumber2 = rowsAbove + Math.randomRange(1, 6)
+        }
+    } else if (index == 2) {
+
+    } else if (index == 3) {
+
+    } else if (index == 4) {
+
+    }
+    if (Math.percentChance(15)) {
+        makeDuck()
     }
 }
 
