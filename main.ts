@@ -1,3 +1,16 @@
+/* TO DO
+    Bugs:
+        Ramune duck doesn't fill in background tiles with water
+        Water drains regardless of spotted duck's extra glass
+        Can still hear and see ducks after game over
+    Features:
+        Music
+        Add 2 new ducks
+        Sleep disturbances
+        Clock
+*/
+
+
 // I can't figure out how to rename the actual image files so I'm using variables 0_0
 let duckImages = [assets.image`myImage`, assets.image`myImage10`, assets.image`myImage11`]
 let blank = assets.image`myImage3`
@@ -19,6 +32,7 @@ function makeDuck() {
     duckSprites[tempNumber].vx = Math.randomRange(-50, 50)
     duckSprites[tempNumber].setBounceOnWall(true)
     sprites.setDataNumber(duckSprites[tempNumber], "index", tempNumber2)
+    sprites.setDataBoolean(duckSprites[tempNumber], "inWater", true)
 }
 
 //TITLE SCREEN
@@ -97,22 +111,22 @@ scene.onHitWall(SpriteKind.Food, function (sprite: Sprite, location: tiles.Locat
 
 //Change from water physics to air physics
 scene.onOverlapTile(SpriteKind.Food, backgroundTile, function (sprite: Sprite, location: tiles.Location) {
-    if (inWater) {
-        inWater = false;
+    if (sprites.readDataBoolean(sprite, "inWater")) {
+        sprites.setDataBoolean(sprite, "inWater", false)
         sprite.ay = gravity;
-        sprite.vy += 15
-        if (sprite.vy < -100) {
+        sprite.vy += 10
+        if (sprite.vy < -200) {
             sprite.vy = -100
         }
     }
 })
 //Matching function to change from air physics to water physics
 scene.onOverlapTile(SpriteKind.Food, waterTile, function (sprite: Sprite, location: tiles.Location) {
-    if (inWater == false) {
-        inWater = true;
+    if (sprites.readDataBoolean(sprite, "inWater") == false) {
+        sprites.setDataBoolean(sprite, "inWater", true)
         sprite.ay = buoyancy;
-        sprite.vy -= 15
-        if (sprite.vy > 100) {
+        sprite.vy -= 10
+        if (sprite.vy > 200) {
             sprite.vy = 100
         }
     }
@@ -146,6 +160,9 @@ function drainWaterLevel(level: number) {
             for (let i = 0; i < 10; i++) {
                 if (tiles.getTileAt(i, j) == waterTile) {
                     tiles.setTileAt(tiles.getTileLocation(i, j), backgroundTile);
+                    console.logValue("Position", i + ", " + j)
+                    console.logValue("IsBackground", tiles.getTileAt(i, j) == backgroundTile)
+                    console.logValue("IsBackgroundImage", tiles.getTileImage(tiles.getTileLocation(i, j)) == backgroundTile)
                 } else if (tiles.getTileAt(i, j) == glassWaterTile) {
                     tiles.setTileAt(tiles.getTileLocation(i, j), glassTile)
                 }
@@ -156,6 +173,7 @@ function drainWaterLevel(level: number) {
         if (waterLevel > rowsAbove + 4) {
             gameOver(0)
         }
+        textSprite3.setText(waterLevel.toString())
     }
 }
 
@@ -176,11 +194,11 @@ function gameOver(ending: number) {
         ramune.setImage(ramuneImages[3])
         pause(2500)
         if (Math.round(game.runtime() / 100) / 100 < 60) {
-            game.setGameOverMessage(false, "Slept for " + Math.round(game.runtime() / 100) / 100 + " minutes!")
+            game.setGameOverMessage(false, "Slept for " + Math.round(game.runtime() / 50) / 100 + " minutes.")
             game.gameOver(false)
         }
         else {
-            game.setGameOverMessage(true, "Slept for " + Math.round(game.runtime() / 100) / 100 / 60 + " hours!")
+            game.setGameOverMessage(true, "Slept for " + Math.round(game.runtime() / 50) / 100 / 60 + " hours!")
             game.gameOver(true)
         }
     }
@@ -188,7 +206,7 @@ function gameOver(ending: number) {
 
 //For activating a duck's power
 function duckPower(index: number, sprite: Sprite) {
-    if (index == 0) {
+    if (index == 0) {                                                                               //BIRTHDAY
         if (crackingSprites.length > 0) {
             //Find closest sprite
             let tempNumber = closestSprite(sprite, crackingSprites);
@@ -205,7 +223,7 @@ function duckPower(index: number, sprite: Sprite) {
                 music.play(music.melodyPlayable(music.magicWand), music.PlaybackMode.UntilDone)
             }
         }
-    } else if (index == 1) {
+    } else if (index == 1) {                                                                        //SPOTTED
         let tempBoolean = true;
         for (let i = 0; i < 100; i++) {
             let tempNumber = Math.randomRange(1, 8);
@@ -225,47 +243,50 @@ function duckPower(index: number, sprite: Sprite) {
         }
         sprite.startEffect(effects.hearts, 250)
         music.play(music.melodyPlayable(music.magicWand), music.PlaybackMode.UntilDone)
-    } else if (index == 2) {
-            let i = waterLevel;
-            //positions of the two glass blocks
-            let tempNumber = -1
-            let tempNumber2 = -1
-            //loop through each column of the row
-            for (let j = 0; j < 10; j++) {
-                if (tiles.tileAtLocationEquals(tiles.getTileLocation(j, i), glassTile)) {
-                    if (tempNumber == -1) {
-                        tempNumber = j;
-                    }
-                    else if (tempNumber2 == -1) {
-                        tempNumber2 = j;
-                        break;
-                        //Found!
-                    }
+    } else if (index == 2) {                                                                        //RAMUNE
+        let i = waterLevel;
+        //positions of the two glass blocks
+        let tempNumber = -1
+        let tempNumber2 = -1
+        //loop through each column of the row
+        for (let j = 0; j < 10; j++) {
+            if (tiles.tileAtLocationEquals(tiles.getTileLocation(j, i), glassTile)) {
+                if (tempNumber == -1 && j != 8) {
+                    tempNumber = j;
+                }
+                else if (tempNumber2 == -1) {
+                    tempNumber2 = j;
+                    break;
+                    //Found!
                 }
             }
-            if (tempNumber == -1) {
-                tiles.setTileAt(tiles.getTileLocation(1, i), glassTile)
-                tiles.setWallAt(tiles.getTileLocation(1, i), true)
-                tempNumber = 1;
+        }
+        if (tempNumber == -1) {
+            tiles.setTileAt(tiles.getTileLocation(1, i), glassTile)
+            tiles.setWallAt(tiles.getTileLocation(1, i), true)
+            tempNumber = 1;
+        }
+        if (tempNumber2 == -1) {
+            tiles.setTileAt(tiles.getTileLocation(8, i), glassTile)
+            tiles.setWallAt(tiles.getTileLocation(8, i), true)
+            tempNumber2 = 8;
+        }
+        for (let k = tempNumber; k <= tempNumber2; k++) {
+            console.logValue("Position", k + ", " + i)
+            console.logValue("IsBackground", tiles.getTileAt(k, i) == backgroundTile)
+            if (tiles.getTileAt(k, i) == glassTile) {
+                tiles.setTileAt(tiles.getTileLocation(k, i), glassWaterTile);
+            } else if (tiles.getTileAt(k, i) == backgroundTile) {
+                tiles.setTileAt(tiles.getTileLocation(k, i), waterTile)
             }
-            if (tempNumber2 == -1) {
-                tiles.setTileAt(tiles.getTileLocation(8, i), glassTile)
-                tiles.setWallAt(tiles.getTileLocation(8, i), true)
-                tempNumber2 = 8;
+            else {
+                scene.cameraShake(2, 250)
             }
-            if (true) {
-                for (let k = tempNumber; k <= tempNumber2; k++) {
-                    if (tiles.getTileAt(k, i) == backgroundTile) {
-                        tiles.setTileAt(tiles.getTileLocation(k, i), waterTile);
-                    } else if (tiles.getTileAt(k, i) == glassTile) {
-                        tiles.setTileAt(tiles.getTileLocation(k, i), glassWaterTile)
-                    }
-                }
-                waterLevel = i - 1;
-                sprite.startEffect(effects.hearts, 250)
-                music.play(music.melodyPlayable(music.magicWand), music.PlaybackMode.UntilDone)
-                //Found!
-            }
+        }
+        waterLevel = i - 1;
+        sprite.startEffect(effects.hearts, 250)
+        music.play(music.melodyPlayable(music.magicWand), music.PlaybackMode.UntilDone)
+        //Found!
     } 
     if (Math.percentChance(15)) {
         makeDuck()
