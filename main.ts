@@ -1,8 +1,5 @@
 /* TO DO
     Bugs:
-        Ramune duck doesn't fill in background tiles with water
-        Water drains regardless of spotted duck's extra glass
-        Can still hear and see ducks after game over
     Features:
         Music
         Add 2 new ducks
@@ -147,6 +144,8 @@ browserEvents.MouseLeft.onEvent(browserEvents.MouseButtonEvent.Pressed, function
         duckPower(sprites.readDataNumber(duckSprites[tempNumber], "index"), duckSprites[tempNumber])
     } else if (tiles.getTileAt(Math.floor(x / 16), Math.floor((y + rowsAbove*16) / 16)) == glassWaterTile) {
         damage(tiles.getTileLocation(Math.floor(x / 16), Math.floor((y + rowsAbove*16) / 16)))
+    } else if (tiles.getTileAt(Math.floor(x / 16), Math.floor((y + rowsAbove*16) / 16)) == glassTile) {
+        damage(tiles.getTileLocation(Math.floor(x / 16), Math.floor((y + rowsAbove*16) / 16)))
     }
 })
 
@@ -161,6 +160,7 @@ function drainWaterLevel(level: number) {
                 if (tiles.getTileAt(i, j) == waterTile) {
                     tiles.setTileAt(tiles.getTileLocation(i, j), backgroundTile);
                     console.logValue("Position", i + ", " + j)
+                    console.log("Set tile to have the image 'background'")
                     console.logValue("IsBackground", tiles.getTileAt(i, j) == backgroundTile)
                     console.logValue("IsBackgroundImage", tiles.getTileImage(tiles.getTileLocation(i, j)) == backgroundTile)
                 } else if (tiles.getTileAt(i, j) == glassWaterTile) {
@@ -177,12 +177,47 @@ function drainWaterLevel(level: number) {
     }
 }
 
+function raiseWaterLevel() {
+    let i = waterLevel;
+    //positions of the two glass blocks
+    let tempNumber = 1
+    let tempNumber2 = 8
+    //find existing glass if possible
+    let tempArray = allTilesInRow(i, glassTile);
+    if (tempArray.length >= 2) {
+        tempNumber = tempArray[0];
+        tempNumber2 = tempArray[tempArray.length - 1];
+    }
+    else {
+        tiles.setTileAt(tiles.getTileLocation(1, i), glassTile);
+        tiles.setTileAt(tiles.getTileLocation(8, i), glassTile);
+    }
+    //set them to be walls
+    tiles.setWallAt(tiles.getTileLocation(tempNumber, i), true);
+    tiles.setWallAt(tiles.getTileLocation(tempNumber2, i), true);
+    //waterlog everything
+    for (let k = tempNumber; k <= tempNumber2; k++) {
+        if (tiles.getTileAt(k, i) == glassTile) {
+            tiles.setTileAt(tiles.getTileLocation(k, i), glassWaterTile);
+        } else if (true) { //tiles.getTileAt(k, i) == backgroundTile, temp fix due to bug
+            if (tiles.getTileAt(k, i + 1) == glassWaterTile || tiles.getTileAt(k, i + 1) == waterTile) {
+                tiles.setTileAt(tiles.getTileLocation(k, i), waterTile)
+            }
+            else {
+                tiles.setTileAt(tiles.getTileLocation(k, i), glassWaterTile);
+                tiles.setWallAt(tiles.getTileLocation(k, i), true)
+            }
+        }
+    }
+}
+
 //For resetting the scene
 //Sprite kinds used: Enemy, Food
 function clear() {
     scene.setTileMapLevel(blankTilemap)
     sprites.destroyAllSpritesOfKind(SpriteKind.Food);
     sprites.destroyAllSpritesOfKind(SpriteKind.Enemy)
+    music.stopAllSounds();
 }
 
 //For game ending
@@ -244,46 +279,8 @@ function duckPower(index: number, sprite: Sprite) {
         sprite.startEffect(effects.hearts, 250)
         music.play(music.melodyPlayable(music.magicWand), music.PlaybackMode.UntilDone)
     } else if (index == 2) {                                                                        //RAMUNE
-        let i = waterLevel;
-        //positions of the two glass blocks
-        let tempNumber = -1
-        let tempNumber2 = -1
-        //loop through each column of the row
-        for (let j = 0; j < 10; j++) {
-            if (tiles.tileAtLocationEquals(tiles.getTileLocation(j, i), glassTile)) {
-                if (tempNumber == -1 && j != 8) {
-                    tempNumber = j;
-                }
-                else if (tempNumber2 == -1) {
-                    tempNumber2 = j;
-                    break;
-                    //Found!
-                }
-            }
-        }
-        if (tempNumber == -1) {
-            tiles.setTileAt(tiles.getTileLocation(1, i), glassTile)
-            tiles.setWallAt(tiles.getTileLocation(1, i), true)
-            tempNumber = 1;
-        }
-        if (tempNumber2 == -1) {
-            tiles.setTileAt(tiles.getTileLocation(8, i), glassTile)
-            tiles.setWallAt(tiles.getTileLocation(8, i), true)
-            tempNumber2 = 8;
-        }
-        for (let k = tempNumber; k <= tempNumber2; k++) {
-            console.logValue("Position", k + ", " + i)
-            console.logValue("IsBackground", tiles.getTileAt(k, i) == backgroundTile)
-            if (tiles.getTileAt(k, i) == glassTile) {
-                tiles.setTileAt(tiles.getTileLocation(k, i), glassWaterTile);
-            } else if (tiles.getTileAt(k, i) == backgroundTile) {
-                tiles.setTileAt(tiles.getTileLocation(k, i), waterTile)
-            }
-            else {
-                scene.cameraShake(2, 250)
-            }
-        }
-        waterLevel = i - 1;
+        raiseWaterLevel()
+        waterLevel--;
         sprite.startEffect(effects.hearts, 250)
         music.play(music.melodyPlayable(music.magicWand), music.PlaybackMode.UntilDone)
         //Found!
@@ -342,6 +339,18 @@ function damage(location: tiles.Location) {
     }
 }
 
+function allTilesInRow(row: number, tile: Image) {
+    let tempArray = [-1]
+    tempArray.pop()
+    //loop through each column in the row
+    for (let i = 1; i < 8; i++) {
+        if (tiles.getTileAt(i, row) == tile) {
+            tempArray.push(i)
+        }
+    }
+    return(tempArray)
+}
+
 game.onUpdate(function () {
-    
+    //Placeholder
 })
