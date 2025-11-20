@@ -89,6 +89,7 @@ duckSprites[0].destroy();
 duckSprites.pop();
 
 //initial conditions
+let spawnPercent = 25;
 makeDuck()
 let waterLevel = rowsAbove
 ramune.setFlag(SpriteFlag.GhostThroughWalls, true)
@@ -103,7 +104,14 @@ textSprite3.setText("Try clicking a duck!")
 textSprite3.x = 80
 
 scene.onHitWall(SpriteKind.Food, function (sprite: Sprite, location: tiles.Location) {
-    damage(location)
+    if (tiles.getTileAt(location.col, location.row) == glassTile || tiles.getTileAt(location.col, location.row) == glassWaterTile) {
+        damage(location)
+    }
+    else if (sprite.isHittingTile(CollisionDirection.Bottom)) {
+        sprites.destroy(sprite)
+        duckSprites.removeAt(duckSprites.indexOf(sprite))
+        scene.cameraShake(2, 100)
+    }
 })
 
 //Change from water physics to air physics
@@ -173,7 +181,6 @@ function drainWaterLevel(level: number) {
         if (waterLevel > rowsAbove + 4) {
             gameOver(0)
         }
-        textSprite3.setText(waterLevel.toString())
     }
 }
 
@@ -353,4 +360,10 @@ function allTilesInRow(row: number, tile: Image) {
 
 game.onUpdate(function () {
     //Placeholder
+})
+
+game.onUpdateInterval(2500, function () {
+    if (Math.percentChance(spawnPercent)) {
+        makeDuck();
+    }
 })
