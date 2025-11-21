@@ -107,7 +107,7 @@ scene.onHitWall(SpriteKind.Food, function (sprite: Sprite, location: tiles.Locat
     if (tiles.getTileAt(location.col, location.row) == glassTile || tiles.getTileAt(location.col, location.row) == glassWaterTile) {
         damage(location)
     }
-    else if (sprite.isHittingTile(CollisionDirection.Bottom)) {
+    else {
         sprites.destroy(sprite)
         duckSprites.removeAt(duckSprites.indexOf(sprite))
         scene.cameraShake(2, 100)
@@ -291,7 +291,9 @@ function duckPower(index: number, sprite: Sprite) {
         sprite.startEffect(effects.hearts, 250)
         music.play(music.melodyPlayable(music.magicWand), music.PlaybackMode.UntilDone)
         //Found!
-    } 
+    } else if (index == 3) {
+        heal(sprite.tilemapLocation())
+    }
     if (Math.percentChance(15)) {
         makeDuck()
     }
@@ -344,6 +346,32 @@ function damage(location: tiles.Location) {
         crackingSprites.push(sprites.create(brokenGlassSprites[0], SpriteKind.Enemy))
         tiles.placeOnTile(crackingSprites[crackingSprites.length - 1], location);
     }
+}
+
+function heal(location: tiles.Location) {
+    //Boolean to check whether the duck overlapped an existing crack
+    for (let i = 0; i < crackingSprites.length; i++) {
+        //If we hit a crack
+        if (crackingSprites[i].x == location.x && crackingSprites[i].y == location.y) {
+            let sprite = crackingSprites[i]
+            let tempNumber = brokenGlassSprites.indexOf(sprite.image);
+            if (tempNumber > 0) {
+                //If its not all the way healed
+                sprite.setImage(brokenGlassSprites[tempNumber - 1]);
+            } else {
+                //Else, break it entirely
+                sprite.setImage(blank);
+                sprite.destroy();
+                crackingSprites.removeAt(i);
+                tiles.setTileAt(location, backgroundTile);
+                tiles.setWallAt(location, false)
+                //And make the water drain
+                timer.background(function() {
+                    drainWaterLevel(location.row);
+                })
+            }
+        }
+    } 
 }
 
 function allTilesInRow(row: number, tile: Image) {
