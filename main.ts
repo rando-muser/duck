@@ -235,12 +235,12 @@ function gameOver(ending: number) {
         scene.setBackgroundImage(backgroundImageEnd)
         ramune.setImage(ramuneImages[3])
         pause(2500)
-        if (Math.round(game.runtime() / 100) / 100 < 60) {
+        if (Math.round(game.runtime() / 100) / 100 < 6) {
             game.setGameOverMessage(false, "Slept for " + Math.round(game.runtime() / 50) / 100 + " minutes.")
             game.gameOver(false)
         }
         else {
-            game.setGameOverMessage(true, "Slept for " + Math.round(game.runtime() / 50) / 100 / 60 + " hours!")
+            game.setGameOverMessage(true, "Slept for " + Math.round(game.runtime() / 50) / 100 + " minutes!")
             game.gameOver(true)
         }
     }
